@@ -11,7 +11,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/users', userController.criarUsuario);
-app.patch('/users/:googleUid', userController.atualizarCargoESenioridade);
+app.put('/users/:googleUid', userController.atualizarUsuario); // New route for updating user profile
+app.patch('/users/:googleUid/position-seniority', userController.atualizarCargoESenioridade); // Updated path for clarity
 
 
 app.listen(3001, () => {
