@@ -122,4 +122,43 @@ exports.atualizarCargoESenioridade = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
+// Get all users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const snapshot = await db.collection('users').get();
+    const users = [];
+
+    snapshot.forEach(doc => {
+      users.push({
+        uid: doc.id,
+        ...doc.data()
+      });
+    });
+
+    return res.status(200).json(users);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// Get user by ID
+exports.getUserById = async (req, res) => {
+  const { googleUid } = req.params;
+
+  try {
+    const userDoc = await db.collection('users').doc(googleUid).get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    return res.status(200).json({
+      googleUid: userDoc.id,
+      ...userDoc.data()
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
   

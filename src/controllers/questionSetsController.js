@@ -38,7 +38,7 @@ exports.createQuestionSet = async (req, res) => {
       updated_at: formattedDate
     };
 
-    const docRef = await db.collection('question_sets').add(questionSetData);
+    const docRef = await db.collection('questions_sets').add(questionSetData);
     const newQuestionSet = await docRef.get();
 
     return res.status(201).json({
@@ -78,7 +78,7 @@ exports.getQuestionSetsByFromOrTo = async (req, res) => {
   }
 
   try {
-    let query = db.collection('question_sets');
+    let query = db.collection('questions_sets');
 
     if (from && to) {
       // If both parameters are provided, find question sets that match both
@@ -112,7 +112,7 @@ exports.getQuestionSetById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const doc = await db.collection('question_sets').doc(id).get();
+    const doc = await db.collection('questions_sets').doc(id).get();
 
     if (!doc.exists) {
       return res.status(404).json({ error: 'Question set not found' });
@@ -134,7 +134,7 @@ exports.updateQuestionSet = async (req, res) => {
 
   try {
     // Check if question set exists
-    const doc = await db.collection('question_sets').doc(id).get();
+    const doc = await db.collection('questions_sets').doc(id).get();
 
     if (!doc.exists) {
       return res.status(404).json({ error: 'Question set not found' });
@@ -164,11 +164,11 @@ exports.updateQuestionSet = async (req, res) => {
 
     // Only update if there are fields to update
     if (Object.keys(updateData).length > 0) {
-      await db.collection('question_sets').doc(id).update(updateData);
+      await db.collection('questions_sets').doc(id).update(updateData);
     }
 
     // Get the updated question set
-    const updatedDoc = await db.collection('question_sets').doc(id).get();
+    const updatedDoc = await db.collection('questions_sets').doc(id).get();
 
     return res.status(200).json({
       id: updatedDoc.id,
@@ -185,13 +185,13 @@ exports.deleteQuestionSet = async (req, res) => {
 
   try {
     // Check if question set exists
-    const doc = await db.collection('question_sets').doc(id).get();
+    const doc = await db.collection('questions_sets').doc(id).get();
 
     if (!doc.exists) {
       return res.status(404).json({ error: 'Question set not found' });
     }
 
-    await db.collection('question_sets').doc(id).delete();
+    await db.collection('questions_sets').doc(id).delete();
 
     return res.status(200).json({ message: 'Question set deleted successfully' });
   } catch (err) {
